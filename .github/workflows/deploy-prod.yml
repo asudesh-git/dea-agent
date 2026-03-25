@@ -1,0 +1,43 @@
+name: Deploy dea-agent to PROD
+
+# 1. Trigger: This ONLY runs when code is merged into the 'main' branch
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step B: Securely authenticate to Google Cloud (Production)
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # IMPORTANT: In a real enterprise setup, Prod is a completely separate Google Cloud project. 
+          # Therefore, you would run a second Terraform script to get a PROD Provider and PROD Service Account.
+          # For a simple demo in a single project, you can reuse the Dev strings here.
+          workload_identity_provider: 'projects/87200014978/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
+          service_account: 'github-actions-deployer@sa-demo-argolis.iam.gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Step D: Deploy to Cloud Run (Production)
+      - name: Deploy to Cloud Run PROD
+        run: |
+          gcloud run deploy dea-agent-prod \
+            --source . \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --project sa-demo-argolis 
+            # ^ Make sure this points to your production environment!
