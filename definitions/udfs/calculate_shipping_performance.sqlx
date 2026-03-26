@@ -1,0 +1,21 @@
+config {
+  type: "operations"
+}
+
+CREATE OR REPLACE FUNCTION `sa-demo-argolis.an_ecommerce_demo.calculate_shipping_performance_py`(created_at TIMESTAMP, shipped_at TIMESTAMP, status STRING)
+  RETURNS STRING
+  LANGUAGE js AS
+"""
+  if (status == 'returned' || shipped_at == null) {
+    return 'not_applicable';
+  }
+  const createdDate = new Date(created_at);
+  const shippedDate = new Date(shipped_at);
+  const diffTime = Math.abs(shippedDate - createdDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (diffDays <= 2) {
+    return 'on_time';
+  } else {
+    return 'late';
+  }
+""";
