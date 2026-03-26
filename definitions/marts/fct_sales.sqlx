@@ -1,0 +1,20 @@
+config {
+  type: "table",
+  schema: "an_ecommerce_demo",
+  name: "fct_sales",
+  description: "Fact table for sales.",
+  tags: ["marts"]
+}
+
+SELECT
+  oi.order_id,
+  o.user_id,
+  oi.product_id,
+  CAST(o.created_at AS DATE) AS order_date,
+  oi.item_revenue,
+  o.num_of_item
+FROM
+  ${ref("stg_orders")} AS o
+JOIN
+  ${ref("stg_order_items")} AS oi
+  ON o.order_id = oi.order_id

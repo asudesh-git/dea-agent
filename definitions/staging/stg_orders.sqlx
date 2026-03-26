@@ -1,0 +1,38 @@
+config {
+  type: "table",
+  schema: "an_ecommerce_demo",
+  name: "stg_orders",
+  description: "Staging table for order data with cleaning, standardization, and shipping performance calculation.",
+  tags: ["staging", "auto-cleaning"],
+  columns: {
+    order_id: "Order ID",
+    user_id: "User ID associated with the order",
+    status: "Status of the order",
+    gender: "Gender of the user",
+    created_at: "Timestamp of order creation",
+    returned_at: "Timestamp of order return",
+    shipped_at: "Timestamp of order shipment",
+    delivered_at: "Timestamp of order delivery",
+    num_of_item: "Number of items in the order",
+    days_to_ship: "Number of days taken to ship the order"
+  },
+  assertions: {
+    rowConditions: [
+      "num_of_item >= 0"
+    ]
+  }
+}
+
+SELECT
+  order_id,
+  user_id,
+  LOWER(status) AS status,
+  gender,
+  created_at,
+  returned_at,
+  shipped_at,
+  delivered_at,
+  num_of_item,
+  `sa-demo-argolis.an_ecommerce_demo.calculate_shipping_performance_py`(created_at, shipped_at, status) AS days_to_ship
+FROM
+  ${ref("raw_orders")}

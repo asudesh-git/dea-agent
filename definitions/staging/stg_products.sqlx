@@ -1,0 +1,33 @@
+config {
+  type: "table",
+  schema: "an_ecommerce_demo",
+  name: "stg_products",
+  description: "Staging table for product data with cleaning and standardization.",
+  tags: ["staging", "auto-cleaning"],
+  columns: {
+    id: "Product ID",
+    cost: "Cost of the product",
+    category: "Product category",
+    name: "Name of the product",
+    brand: "Brand of the product",
+    retail_price: "Retail price of the product",
+    department: "Department to which the product belongs",
+    sku: "Stock Keeping Unit of the product",
+    distribution_center_id: "ID of the distribution center",
+    is_active: "Flag indicating if the product is active"
+  }
+}
+
+SELECT
+  id,
+  cost,
+  category,
+  name,
+  brand,
+  retail_price,
+  INITCAP(department) AS department,
+  sku,
+  distribution_center_id,
+  TRUE AS is_active
+FROM
+  ${ref("raw_products")}

@@ -1,0 +1,21 @@
+config {
+  type: "table",
+  schema: "an_ecommerce_demo",
+  name: "dim_products",
+  description: "Dimension table for products.",
+  tags: ["marts"]
+}
+
+SELECT
+  id AS product_id,
+  cost,
+  category,
+  name AS product_name,
+  brand,
+  retail_price,
+  department,
+  sku,
+  distribution_center_id,
+  is_active
+FROM
+  ${ref("stg_products")}

@@ -1,0 +1,25 @@
+config {
+  type: "table",
+  schema: "an_ecommerce_demo",
+  name: "dim_customers",
+  description: "Dimension table for customers.",
+  tags: ["marts"]
+}
+
+SELECT
+  id AS customer_id,
+  full_name,
+  email,
+  age,
+  gender,
+  state,
+  street_address,
+  postal_code,
+  city,
+  country,
+  latitude,
+  longitude,
+  traffic_source,
+  created_at AS customer_created_at
+FROM
+  ${ref("stg_users")}

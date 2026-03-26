@@ -1,0 +1,31 @@
+config {
+  type: "operations",
+  hasOutput: true,
+  schema: "an_ecommerce_demo",
+  name: "raw_users",
+  description: "External table for raw user data from GCS.",
+  tags: ["source"],
+}
+
+CREATE OR REPLACE EXTERNAL TABLE ${self()}
+(
+  id INT64,
+  first_name STRING,
+  last_name STRING,
+  email STRING,
+  age INT64,
+  gender STRING,
+  state STRING,
+  street_address STRING,
+  postal_code STRING,
+  city STRING,
+  country STRING,
+  latitude FLOAT64,
+  longitude FLOAT64,
+  traffic_source STRING,
+  created_at TIMESTAMP
+)
+OPTIONS (
+  format = 'JSON',
+  uris = ['gs://dea_end2end_demo_local/users.json']
+)
