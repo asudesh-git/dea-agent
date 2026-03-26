@@ -1,0 +1,24 @@
+
+config {
+  type: "operations",
+  tags: ["source"],
+  hasOutput: true
+}
+
+CREATE OR REPLACE EXTERNAL TABLE ${self()}
+(
+  order_id INT64,
+  user_id INT64,
+  product_id INT64,
+  inventory_item_id INT64,
+  status STRING,
+  created_at TIMESTAMP,
+  shipped_at TIMESTAMP,
+  delivered_at TIMESTAMP,
+  returned_at TIMESTAMP,
+  sale_price FLOAT64
+)
+OPTIONS (
+  format = 'AVRO',
+  uris = ['gs://dea_end2end_demo_local/order_items.avro']
+)

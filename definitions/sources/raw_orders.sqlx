@@ -1,0 +1,24 @@
+
+config {
+  type: "operations",
+  tags: ["source"],
+  hasOutput: true
+}
+
+CREATE OR REPLACE EXTERNAL TABLE ${self()}
+(
+  order_id INT64,
+  user_id INT64,
+  status STRING,
+  gender STRING,
+  created_at TIMESTAMP,
+  returned_at TIMESTAMP,
+  shipped_at TIMESTAMP,
+  delivered_at TIMESTAMP,
+  num_of_item INT64
+)
+OPTIONS (
+  format = 'CSV',
+  uris = ['gs://dea_end2end_demo_local/orders.csv'],
+  skip_leading_rows = 1
+)

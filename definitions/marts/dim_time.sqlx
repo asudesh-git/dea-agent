@@ -1,0 +1,14 @@
+
+config {
+  type: "table",
+  tags: ["marts"],
+  description: "Dimension table for time."
+}
+
+SELECT DISTINCT
+  CAST(created_at AS DATE) AS date,
+  EXTRACT(YEAR FROM created_at) AS year,
+  EXTRACT(MONTH FROM created_at) AS month,
+  EXTRACT(DAY FROM created_at) AS day
+FROM
+  ${ref("stg_orders")}

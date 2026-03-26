@@ -1,0 +1,20 @@
+
+config {
+  type: "view",
+  tags: ["data_products"],
+  description: "Aggregated view of monthly sales revenue by product category."
+}
+
+SELECT
+  p.category,
+  FORMAT_DATE("%Y-%m", s.order_date) AS month,
+  SUM(s.item_revenue) AS monthly_revenue
+FROM
+  ${ref("fct_sales")} AS s
+JOIN
+  ${ref("dim_products")} AS p
+  ON s.product_id = p.product_id
+GROUP BY
+  1, 2
+ORDER BY
+  1, 2

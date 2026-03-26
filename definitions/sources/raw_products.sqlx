@@ -1,0 +1,23 @@
+
+config {
+  type: "operations",
+  tags: ["source"],
+  hasOutput: true
+}
+
+CREATE OR REPLACE EXTERNAL TABLE ${self()}
+(
+  id INT64,
+  cost FLOAT64,
+  category STRING,
+  name STRING,
+  brand STRING,
+  retail_price FLOAT64,
+  department STRING,
+  sku STRING,
+  distribution_center_id INT64
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://dea_end2end_demo_local/products.parquet']
+)

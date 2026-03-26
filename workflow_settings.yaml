@@ -1,0 +1,5 @@
+defaultProject: sa-demo-argolis
+defaultDataset: an_ecommerce_demo
+defaultAssertionDataset: dataform_assertions
+dataformCoreVersion: 3.0.42
+defaultLocation: "US"

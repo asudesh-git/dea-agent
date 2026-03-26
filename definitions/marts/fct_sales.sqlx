@@ -1,0 +1,19 @@
+
+config {
+  type: "table",
+  tags: ["marts"],
+  description: "Fact table for sales."
+}
+
+SELECT
+  oi.order_id,
+  o.user_id,
+  oi.product_id,
+  CAST(o.created_at AS DATE) AS order_date,
+  oi.item_revenue,
+  o.num_of_item
+FROM
+  ${ref("stg_orders")} AS o
+JOIN
+  ${ref("stg_order_items")} AS oi
+  ON o.order_id = oi.order_id
