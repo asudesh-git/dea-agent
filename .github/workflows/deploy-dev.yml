@@ -36,12 +36,26 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      # Step D: Deploy the code to Cloud Run
-      # (Make sure to replace YOUR_GCP_PROJECT_ID with your actual Dev project ID)
-      - name: Deploy to Cloud Run
+      # Step D: Compile the Dataform project
+      # (This verifies the SQLX code and prepares the execution graph)
+      - name: Compile Dataform Project
+        id: compile
         run: |
-          gcloud run deploy dea-agent-dev \
-            --source . \
-            --region us-central1 \
-            --allow-unauthenticated \
-            --project sa-demo-argolis
+          COMPILATION=$(gcloud dataform compilations create \
+            --project="sa-demo-argolis" \
+            --location="us-central1" \
+            --repository="data-eng-core" \
+            --git-commitish="${{ github.sha }}" \
+            --format="value(name)")
+          
+          echo "COMPILATION_ID=$COMPILATION" >> $GITHUB_ENV
+
+      # Step E: Execute the compiled workflow in BigQuery
+      # (This actually runs the SQL in your Dev environment)
+      - name: Execute Dataform Workflow
+        run: |
+          gcloud dataform workflow-invocations create \
+            --project="sa-demo-argolis" \
+            --location="us-central1" \
+            --repository="data-eng-core" \
+            --compilation-result="${{ env.COMPILATION_ID }}"
