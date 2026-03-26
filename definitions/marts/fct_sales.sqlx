@@ -1,8 +1,7 @@
-
-config { 
-    type: "table",
-    tags: ["marts"],
-    description: "Fact table for sales."
+config {
+  type: "table",
+  tags: ["marts"],
+  description: "Fact table for sales."
 }
 
 SELECT

@@ -1,8 +1,7 @@
-
-config { 
-    type: "table",
-    tags: ["marts"],
-    description: "Denormalized table combining all e-commerce data."
+config {
+  type: "table",
+  tags: ["marts"],
+  description: "Denormalized table combining all e-commerce data."
 }
 
 SELECT
@@ -15,7 +14,7 @@ SELECT
   o.shipped_at AS order_shipped_at,
   o.delivered_at AS order_delivered_at,
   o.num_of_item,
-  o.days_to_ship,
+  o.shipping_performance,
   oi.product_id,
   oi.inventory_item_id,
   oi.status AS order_item_status,

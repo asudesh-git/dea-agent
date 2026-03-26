@@ -1,24 +1,24 @@
-
-config { 
-    type: "view",
-    tags: ["staging", "auto-cleaning"],
-    description: "Staging table for user data with cleaning and standardization.",
-    columns: {
-        id: "User ID",
-        full_name: "User's full name",
-        email: "User's email address",
-        age: "User's age",
-        gender: "User's gender (M/F)",
-        state: "State where the user resides",
-        street_address: "User's street address",
-        postal_code: "User's postal code",
-        city: "City where the user resides",
-        country: "Country where the user resides",
-        latitude: "Latitude of user's location",
-        longitude: "Longitude of user's location",
-        traffic_source: "Source of user traffic",
-        created_at: "Timestamp of user creation"
-    }
+config {
+  type: "view",
+  tags: ["staging", "auto-cleaning"],
+  description: "Staging table for user data with cleaning and standardization.",
+  columns: {
+    id: "User ID",
+    full_name: "User's full name",
+    email: "User's email address",
+    age: "User's age",
+    gender: "User's gender (M/F)",
+    state: "State where the user resides",
+    street_address: "User's street address",
+    postal_code: "User's postal code",
+    city: "City where the user resides",
+    country: "Country where the user resides",
+    latitude: "Latitude of user's location",
+    longitude: "Longitude of user's location",
+    traffic_source: "Source of user traffic",
+    created_at: "Timestamp of user creation",
+    user_geom: "Geography object representing user's location"
+  }
 }
 
 SELECT
@@ -39,6 +39,7 @@ SELECT
   latitude,
   longitude,
   traffic_source,
-  created_at
+  created_at,
+  ST_GEOGPOINT(longitude, latitude) AS user_geom
 FROM
   ${ref("raw_users")}

@@ -1,20 +1,19 @@
-
-config { 
-    type: "view",
-    tags: ["staging", "auto-cleaning"],
-    description: "Staging table for order data with cleaning, standardization, and shipping performance calculation.",
-    columns: {
-        order_id: "Order ID",
-        user_id: "User ID associated with the order",
-        status: "Status of the order",
-        gender: "Gender of the user",
-        created_at: "Timestamp of order creation",
-        returned_at: "Timestamp of order return",
-        shipped_at: "Timestamp of order shipment",
-        delivered_at: "Timestamp of order delivery",
-        num_of_item: "Number of items in the order",
-        days_to_ship: "Number of days taken to ship the order"
-    }
+config {
+  type: "view",
+  tags: ["staging", "auto-cleaning"],
+  description: "Staging table for order data with cleaning, standardization, and shipping performance calculation.",
+  columns: {
+    order_id: "Order ID",
+    user_id: "User ID associated with the order",
+    status: "Status of the order",
+    gender: "Gender of the user",
+    created_at: "Timestamp of order creation",
+    returned_at: "Timestamp of order return",
+    shipped_at: "Timestamp of order shipment",
+    delivered_at: "Timestamp of order delivery",
+    num_of_item: "Number of items in the order",
+    shipping_performance: "Shipping performance category"
+  }
 }
 
 SELECT
@@ -27,12 +26,10 @@ SELECT
   shipped_at,
   delivered_at,
   num_of_item,
-  `sa-demo-argolis.an_ecommerce_demo.calculate_shipping_performance_py`(created_at, shipped_at, status) AS days_to_ship
+  `sa-demo-argolis.an_ecommerce_demo.calculate_shipping_performance_py`(created_at, shipped_at, status) AS shipping_performance
 FROM
   ${ref("raw_orders")}
 
--- Data quality assertion
--- Fails if any order has a negative number of items
 post_operations {
   ASSERT (SELECT COUNT(*) FROM ${self()} WHERE num_of_item < 0) = 0 AS "Assertion failed: Found orders with a negative number of items."
 }

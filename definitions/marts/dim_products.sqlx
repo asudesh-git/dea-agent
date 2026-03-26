@@ -1,8 +1,7 @@
-
-config { 
-    type: "table",
-    tags: ["marts"],
-    description: "Dimension table for products."
+config {
+  type: "table",
+  tags: ["marts"],
+  description: "Dimension table for products."
 }
 
 SELECT

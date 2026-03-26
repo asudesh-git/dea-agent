@@ -1,8 +1,8 @@
 
-config { 
-    type: "operations",
-    hasOutput: true,
-    tags: ["source"]
+config {
+  type: "operations",
+  tags: ["source"],
+  hasOutput: true
 }
 
 CREATE OR REPLACE EXTERNAL TABLE ${self()}(
