@@ -2,7 +2,7 @@
 config {
   type: "view",
   tags: ["data_products"],
-  description: "Aggregated view of monthly sales revenue by product category."
+  description: "Aggregated view of monthly sales revenue by product category.."
 }
 
 SELECT
