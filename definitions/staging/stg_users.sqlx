@@ -13,11 +13,9 @@ config {
     postal_code: "User's postal code",
     city: "City where the user resides",
     country: "Country where the user resides",
-    latitude: "Latitude of user's location",
-    longitude: "Longitude of user's location",
     traffic_source: "Source of user traffic",
     created_at: "Timestamp of user creation",
-    user_geom: "Geography object representing user's location"
+    user_geom: "Geography object representing user's location, created from a WKT string."
   }
 }
 
@@ -36,10 +34,8 @@ SELECT
   postal_code,
   city,
   country,
-  latitude,
-  longitude,
   traffic_source,
   created_at,
-  ST_GEOGPOINT(longitude, latitude) AS user_geom
+  SAFE.ST_GEOGFROMTEXT(user_geom) AS user_geom
 FROM
   ${ref("raw_users")}

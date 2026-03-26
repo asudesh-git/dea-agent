@@ -20,7 +20,8 @@ CREATE OR REPLACE EXTERNAL TABLE ${self()}(
   latitude FLOAT64,
   longitude FLOAT64,
   traffic_source STRING,
-  created_at TIMESTAMP
+  created_at TIMESTAMP,
+  user_geom STRING
 )
 OPTIONS (
   format = 'JSON',
