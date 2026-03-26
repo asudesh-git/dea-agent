@@ -1,4 +1,5 @@
 defaultProject: sa-demo-argolis
-defaultDataset: dataform
+defaultDataset: data-eng-core
 defaultAssertionDataset: dataform_assertions
 dataformCoreVersion: 3.0.42
+defaultLocation: "US"
