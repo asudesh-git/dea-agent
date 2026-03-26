@@ -32,12 +32,25 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      # Step D: Deploy to Cloud Run (Production)
-      - name: Deploy to Cloud Run PROD
+      # Step D: Compile the Dataform project for PRODUCTION
+      - name: Compile Dataform Project (PROD)
+        id: compile
         run: |
-          gcloud run deploy dea-agent-prod \
-            --source . \
-            --region us-central1 \
-            --allow-unauthenticated \
-            --project sa-demo-argolis 
-            # ^ Make sure this points to your production environment!
+          COMPILATION=$(gcloud dataform compilations create \
+            --project="sa-demo-argolis" \
+            --location="us-central1" \
+            --repository="data-eng-core" \
+            --git-commitish="${{ github.sha }}" \
+            --default-schema="your_production_dataset" \
+            --format="value(name)")
+          
+          echo "COMPILATION_ID=$COMPILATION" >> $GITHUB_ENV
+
+      # Step E: Execute the compiled workflow in BigQuery
+      - name: Execute Dataform Workflow (PROD)
+        run: |
+          gcloud dataform workflow-invocations create \
+            --project="sa-demo-argolis" \
+            --location="us-central1" \
+            --repository="data-eng-core" \
+            --compilation-result="${{ env.COMPILATION_ID }}"
