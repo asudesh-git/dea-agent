@@ -1,21 +1,66 @@
-config {
-  type: "operations"
+CREATE OR REPLACE FUNCTION an_ecommerce_demo.calculate_shipping_performance_py(
+    created_at TIMESTAMP,
+    shipped_at TIMESTAMP,
+    status STRING
+)
+RETURNS STRING LANGUAGE python
+OPTIONS (
+    entry_point = 'main_shipping_logic',
+    runtime_version = 'python-3.11',
+    description = "Calculates shipping performance based on business days. It returns a category like 'Shipped On Time', 'Shipped Late', or 'Pending'. It excludes weekends and a hardcoded list of US holidays."
+)
+AS r"""
+from datetime import date, timedelta
+
+# Holiday data is hardcoded as a set of (month, day) tuples for efficient lookup.
+# To update holidays, you must edit and redeploy this function.
+
+HOLIDAYS = {
+    (1, 1),   # New Year's Day
+    (5, 30),  # Memorial Day
+    (7, 4),   # Independence Day
+    (9, 5),   # Labor Day
+    (11, 24), # Thanksgiving Day
+    (12, 25), # Christmas Day
+    (12, 26), # Christmas Day (Observed)
 }
 
-CREATE OR REPLACE FUNCTION `sa-demo-argolis.an_ecommerce_demo.calculate_shipping_performance_py`(created_at TIMESTAMP, shipped_at TIMESTAMP, status STRING)
-  RETURNS STRING
-  LANGUAGE js AS
-"""
-  if (status == 'returned' || shipped_at == null) {
-    return 'not_applicable';
-  }
-  const createdDate = new Date(created_at);
-  const shippedDate = new Date(shipped_at);
-  const diffTime = Math.abs(shippedDate - createdDate);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  if (diffDays <= 2) {
-    return 'on_time';
-  } else {
-    return 'late';
-  }
+def calculate_business_days(start_date, end_date):
+    # Calculates business days between two dates, inclusive of the start date.
+    business_days = 0
+    current_date = start_date
+    while current_date <= end_date:
+        # datetime.weekday(): Monday is 0, Sunday is 6.
+        # We exclude Saturday (5) and Sunday (6).
+        is_weekend = current_date.weekday() >= 5
+        is_holiday = (current_date.month, current_date.day) in HOLIDAYS
+
+        if not is_weekend and not is_holiday:
+            business_days += 1
+        current_date += timedelta(days=1)
+    return business_days
+
+# This is the main entry_point function that BigQuery will execute.
+def main_shipping_logic(created_at, shipped_at, status):
+    # Define the Service Level Agreement (SLA) in business days.
+    SLA_BUSINESS_DAYS = 2
+
+    # 1. Handle non-calculable statuses first.
+    # BigQuery automatically passes TIMESTAMP arguments as datetime objects.
+    if status == 'Cancelled':
+        return 'Not Applicable - Cancelled'
+    if shipped_at is None:
+        return 'Pending Shipment'
+    if shipped_at < created_at:
+        return 'Data Error - Shipped before created'
+
+    # 2. For valid, shipped orders, calculate the business days that have passed.
+    # The .date() method extracts the date part from the timestamp.
+    business_days_lapsed = calculate_business_days(created_at.date(), shipped_at.date())
+
+    # 3. Compare the lapsed days to the SLA to determine performance.
+    if business_days_lapsed <= SLA_BUSINESS_DAYS:
+        return 'Shipped On Time'
+    else:
+        return 'Shipped Late'
 """;
