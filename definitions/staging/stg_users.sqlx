@@ -34,6 +34,8 @@ SELECT
   postal_code,
   city,
   country,
+  latitude,  -- Add this line
+  longitude, -- Add this line
   traffic_source,
   created_at,
   SAFE.ST_GEOGFROMTEXT(user_geom) AS user_geom
