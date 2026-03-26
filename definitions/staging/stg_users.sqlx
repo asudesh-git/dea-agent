@@ -1,25 +1,24 @@
-config {
-  type: "table",
-  schema: "an_ecommerce_demo",
-  name: "stg_users",
-  description: "Staging table for user data with cleaning and standardization.",
-  tags: ["staging", "auto-cleaning"],
-  columns: {
-    id: "User ID",
-    full_name: "User's full name",
-    email: "User's email address",
-    age: "User's age",
-    gender: "User's gender (M/F)",
-    state: "State where the user resides",
-    street_address: "User's street address",
-    postal_code: "User's postal code",
-    city: "City where the user resides",
-    country: "Country where the user resides",
-    latitude: "Latitude of user's location",
-    longitude: "Longitude of user's location",
-    traffic_source: "Source of user traffic",
-    created_at: "Timestamp of user creation"
-  }
+
+config { 
+    type: "view",
+    tags: ["staging", "auto-cleaning"],
+    description: "Staging table for user data with cleaning and standardization.",
+    columns: {
+        id: "User ID",
+        full_name: "User's full name",
+        email: "User's email address",
+        age: "User's age",
+        gender: "User's gender (M/F)",
+        state: "State where the user resides",
+        street_address: "User's street address",
+        postal_code: "User's postal code",
+        city: "City where the user resides",
+        country: "Country where the user resides",
+        latitude: "Latitude of user's location",
+        longitude: "Longitude of user's location",
+        traffic_source: "Source of user traffic",
+        created_at: "Timestamp of user creation"
+    }
 }
 
 SELECT

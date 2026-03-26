@@ -1,9 +1,8 @@
-config {
-  type: "table",
-  schema: "an_ecommerce_demo",
-  name: "denormalized_ecommerce",
-  description: "Denormalized table combining all e-commerce data.",
-  tags: ["marts"]
+
+config { 
+    type: "table",
+    tags: ["marts"],
+    description: "Denormalized table combining all e-commerce data."
 }
 
 SELECT

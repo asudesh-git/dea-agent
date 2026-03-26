@@ -1,9 +1,8 @@
-config {
-  type: "view",
-  schema: "an_ecommerce_demo",
-  name: "vw_monthly_sales_revenue",
-  description: "Aggregated view of monthly sales revenue by product category.",
-  tags: ["data_products"]
+
+config { 
+    type: "view",
+    tags: ["data_products"],
+    description: "Aggregated view of monthly sales revenue by product category."
 }
 
 SELECT

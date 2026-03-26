@@ -1,9 +1,8 @@
-config {
-  type: "table",
-  schema: "an_ecommerce_demo",
-  name: "fct_sales",
-  description: "Fact table for sales.",
-  tags: ["marts"]
+
+config { 
+    type: "table",
+    tags: ["marts"],
+    description: "Fact table for sales."
 }
 
 SELECT

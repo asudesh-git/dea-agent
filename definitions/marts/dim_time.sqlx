@@ -1,9 +1,8 @@
-config {
-  type: "table",
-  schema: "an_ecommerce_demo",
-  name: "dim_time",
-  description: "Dimension table for time.",
-  tags: ["marts"]
+
+config { 
+    type: "table",
+    tags: ["marts"],
+    description: "Dimension table for time."
 }
 
 SELECT DISTINCT

@@ -1,9 +1,8 @@
-config {
-  type: "table",
-  schema: "an_ecommerce_demo",
-  name: "dim_products",
-  description: "Dimension table for products.",
-  tags: ["marts"]
+
+config { 
+    type: "table",
+    tags: ["marts"],
+    description: "Dimension table for products."
 }
 
 SELECT

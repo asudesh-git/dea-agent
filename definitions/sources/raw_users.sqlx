@@ -1,14 +1,11 @@
-config {
-  type: "operations",
-  hasOutput: true,
-  schema: "an_ecommerce_demo",
-  name: "raw_users",
-  description: "External table for raw user data from GCS.",
-  tags: ["source"],
+
+config { 
+    type: "operations",
+    hasOutput: true,
+    tags: ["source"]
 }
 
-CREATE OR REPLACE EXTERNAL TABLE ${self()}
-(
+CREATE OR REPLACE EXTERNAL TABLE ${self()}(
   id INT64,
   first_name STRING,
   last_name STRING,
