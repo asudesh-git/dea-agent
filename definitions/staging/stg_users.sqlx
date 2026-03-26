@@ -13,8 +13,8 @@ config {
     postal_code: "User's postal code",
     city: "City where the user resides",
     country: "Country where the user resides",
-    latitude,  -- Add this line
-    longitude, -- Add this line
+    latitude:  "User's location latitude",
+    longitude: "User's location longitude",
     traffic_source: "Source of user traffic",
     created_at: "Timestamp of user creation",
     user_geom: "Geography object representing user's location, created from a WKT string."
