@@ -5,7 +5,8 @@ config {
   hasOutput: true
 }
 
-CREATE OR REPLACE EXTERNAL TABLE ${self()}(
+CREATE OR REPLACE EXTERNAL TABLE ${self()}
+(
   id INT64,
   first_name STRING,
   last_name STRING,

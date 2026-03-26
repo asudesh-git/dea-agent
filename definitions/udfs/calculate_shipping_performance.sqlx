@@ -1,4 +1,9 @@
-CREATE OR REPLACE FUNCTION an_ecommerce_demo.calculate_shipping_performance_py(
+config {
+  type: "operations",
+  tags: ["udf"]
+}
+
+CREATE OR REPLACE FUNCTION `sa-demo-argolis.an_ecommerce_demo.calculate_shipping_performance_py`(
     created_at TIMESTAMP,
     shipped_at TIMESTAMP,
     status STRING
@@ -63,4 +68,4 @@ def main_shipping_logic(created_at, shipped_at, status):
         return 'Shipped On Time'
     else:
         return 'Shipped Late'
-""";
+"""

@@ -1,3 +1,4 @@
+
 config {
   type: "view",
   tags: ["staging", "auto-cleaning"],
@@ -13,7 +14,7 @@ config {
     postal_code: "User's postal code",
     city: "City where the user resides",
     country: "Country where the user resides",
-    latitude:  "User's location latitude",
+    latitude: "User's location latitude",
     longitude: "User's location longitude",
     traffic_source: "Source of user traffic",
     created_at: "Timestamp of user creation",
@@ -36,8 +37,8 @@ SELECT
   postal_code,
   city,
   country,
-  latitude,  -- Add this line
-  longitude, -- Add this line
+  latitude,
+  longitude,
   traffic_source,
   created_at,
   SAFE.ST_GEOGFROMTEXT(user_geom) AS user_geom
